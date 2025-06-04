@@ -1,0 +1,98 @@
+PDF ANALYZER QUICK REFERENCE CARD
+==================================
+
+LOCATION: /home/lroc/unified-redaction-hub/pdf_analyzer.py
+
+BASIC USAGE
+-----------
+python pdf_analyzer.py <input.pdf> [options]
+
+MOST COMMON COMMANDS
+--------------------
+# Basic analysis (text + structure)
+python pdf_analyzer.py document.pdf
+
+# Full analysis with all features
+python pdf_analyzer.py document.pdf --ocr --forms --images --metadata
+
+# Quick text extraction only
+python pdf_analyzer.py document.pdf --text-only
+
+# Form-focused analysis
+python pdf_analyzer.py document.pdf --forms --coordinates
+
+# OCR for scanned documents
+python pdf_analyzer.py document.pdf --ocr --ocr-lang eng+spa
+
+KEY OPTIONS
+-----------
+--ocr                Enable OCR for scanned/image PDFs
+--ocr-lang LANG      OCR language (eng, spa, fra, etc.)
+--forms              Detect and analyze form fields
+--images             Extract and analyze images
+--metadata           Extract document metadata
+--coordinates        Include text position coordinates
+--text-only          Quick text extraction only
+--page-range X-Y     Analyze specific pages (e.g., 1-5)
+--output FILE        Save results to file
+--format FORMAT      Output format: json, text, html, markdown
+--verbose            Show detailed progress
+
+EXAMPLE WORKFLOWS
+-----------------
+1. Legal Document Analysis:
+   python pdf_analyzer.py contract.pdf --forms --metadata --output analysis.json
+
+2. Scanned Document Processing:
+   python pdf_analyzer.py scanned.pdf --ocr --ocr-lang eng --format text
+
+3. Form Field Detection:
+   python pdf_analyzer.py form.pdf --forms --coordinates --format json
+
+4. Quick Text Search:
+   python pdf_analyzer.py document.pdf --text-only | grep "search term"
+
+5. Batch Processing:
+   for pdf in *.pdf; do
+     python pdf_analyzer.py "$pdf" --forms --output "${pdf%.pdf}_analysis.json"
+   done
+
+6. Multi-language OCR:
+   python pdf_analyzer.py multilingual.pdf --ocr --ocr-lang eng+spa+fra
+
+PERFORMANCE TIPS
+----------------
+• Use --text-only for fastest extraction when OCR not needed
+• Specify --page-range to limit processing for large documents
+• Add --verbose to monitor progress on slow operations
+• OCR significantly increases processing time - use only when needed
+• JSON format provides most structured data for programmatic use
+• Use --coordinates when you need precise text positioning
+
+OUTPUT FORMATS
+--------------
+text     - Plain text, human-readable
+json     - Structured data, best for processing
+html     - Web-viewable with formatting
+markdown - Documentation-friendly format
+
+COMMON USE CASES
+----------------
+Text Extraction:    --text-only
+Form Analysis:      --forms --coordinates
+Scanned Docs:       --ocr --ocr-lang eng
+Full Analysis:      --ocr --forms --images --metadata
+Legal Review:       --forms --metadata --format json
+
+TROUBLESHOOTING
+---------------
+• OCR not working? Check: apt install tesseract-ocr tesseract-ocr-[lang]
+• Import errors? Activate venv: source /home/lroc/unified-redaction-hub/venv/bin/activate
+• Slow performance? Try --page-range or remove --ocr if not needed
+• Memory issues? Process large PDFs in chunks with --page-range
+
+QUICK START
+-----------
+cd /home/lroc/unified-redaction-hub
+source venv/bin/activate
+python pdf_analyzer.py your_document.pdf --forms --output results.json
