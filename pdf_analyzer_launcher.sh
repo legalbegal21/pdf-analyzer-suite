@@ -68,14 +68,34 @@ while true; do
             ;;
             
         3)
-            echo -e "\n${GREEN}Structured Data Extractor (AI)${NC}"
-            echo "Note: Requires ANTHROPIC_API_KEY environment variable"
-            echo -n "Enter PDF path: "
-            read -r pdf_path
+            echo -e "\n${GREEN}Structured Data Extractor (AI-Powered)${NC}"
+            echo "Extract structured data from PDFs using Claude AI"
+            echo
+            echo "Schema options:"
+            echo "  1) Client case information (default)"
+            echo "  2) Immigration documents"
+            echo "  3) Legal memos"
+            echo
+            echo -n "Select schema [1-3]: "
+            read -r schema_choice
             
-            source /home/lroc/unified-redaction-hub/venv/bin/activate
-            python /home/lroc/unified-redaction-hub/pdf_structured_extractor.py "$pdf_path"
-            deactivate
+            case $schema_choice in
+                2) schema="immigration" ;;
+                3) schema="legal" ;;
+                *) schema="client" ;;
+            esac
+            
+            echo -n "Enter PDF path or directory: "
+            read -r pdf_path
+            echo -n "Output directory (default: ./extracted_data): "
+            read -r output_dir
+            output_dir=${output_dir:-./extracted_data}
+            
+            # Get the directory of this script
+            SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+            
+            # Run the structured extractor
+            "$SCRIPT_DIR/analyze_pdf_structured.sh" -s "$schema" -o "$output_dir" "$pdf_path"
             
             echo -e "\n${YELLOW}Press Enter to continue...${NC}"
             read -r

@@ -1,7 +1,7 @@
-PDF ANALYZER QUICK REFERENCE CARD
-==================================
+PDF ANALYZER SUITE QUICK REFERENCE CARD
+========================================
 
-LOCATION: /home/lroc/unified-redaction-hub/pdf_analyzer.py
+MAIN LOCATION: /mnt/c/Users/ramon/pdf-analyzer-suite/
 
 BASIC USAGE
 -----------
@@ -91,8 +91,40 @@ TROUBLESHOOTING
 • Slow performance? Try --page-range or remove --ocr if not needed
 • Memory issues? Process large PDFs in chunks with --page-range
 
+STRUCTURED DATA EXTRACTION (AI-POWERED)
+---------------------------------------
+# Basic client case extraction
+./analyze_pdf_structured.sh document.pdf
+
+# Immigration document extraction  
+./analyze_pdf_structured.sh --schema immigration i130.pdf
+
+# Legal memo extraction
+./analyze_pdf_structured.sh -s legal -o ./memo_data legal_memo.pdf
+
+# Batch extraction with custom output
+./analyze_pdf_structured.sh --schema client --output ./extracted /path/to/pdfs/
+
+# With specific API key and model
+./analyze_pdf_structured.sh --api-key sk-ant-... --model claude-3-opus-20240229 doc.pdf
+
+EXTRACTION SCHEMAS
+------------------
+client      - Client case details, PD factors, family ties (default)
+immigration - I-130, I-589, A-numbers, receipt numbers, priority dates
+legal       - Memos, briefs, analysis, recommendations, citations
+
 QUICK START
 -----------
-cd /home/lroc/unified-redaction-hub
-source venv/bin/activate
-python pdf_analyzer.py your_document.pdf --forms --output results.json
+# Interactive menu
+cd /mnt/c/Users/ramon/pdf-analyzer-suite/
+./pdf_analyzer_launcher.sh
+
+# Single PDF analysis
+./analyze_pdf.sh document.pdf
+
+# Batch processing
+./run_pdf_batch_analyzer.sh /path/to/pdfs -o results.json
+
+# AI extraction
+./analyze_pdf_structured.sh --schema client case_file.pdf
