@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  pdf-analyzer:
+    build: .
+    image: pdf-analyzer-suite:latest
+    container_name: pdf-analyzer
+    volumes:
+      # Mount input directory
+      - ./input:/input:ro
+      # Mount output directory
+      - ./output:/output
+      # Mount for API keys (optional)
+      - ./.env:/app/.env:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - OUTPUT_DIR=/output
+      # Pass through API key if set
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    # Override command for interactive use
+    # command: python simple_pdf_analyzer.py /input/sample.pdf
+    stdin_open: true
+    tty: true
+
+  # Web API service (optional)
+  pdf-analyzer-api:
+    build: .
+    image: pdf-analyzer-suite:latest
+    container_name: pdf-analyzer-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./input:/input:ro
+      - ./output:/output
+      - ./.env:/app/.env:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - OUTPUT_DIR=/output
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    command: ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
+    profiles:
+      - api

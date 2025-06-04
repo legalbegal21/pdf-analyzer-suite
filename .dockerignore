@@ -1,0 +1,53 @@
+# Git
+.git/
+.gitignore
+
+# GitHub
+.github/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+venv/
+env/
+.venv/
+
+# Testing
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+coverage.xml
+*.cover
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+input/
+output/
+*.pdf
+results/
+extracted_data/
+
+# Documentation build
+docs/_build/
+
+# Temporary files
+*.tmp
+*.log
+logs/
+
+# Environment files (will mount separately)
+.env.local
